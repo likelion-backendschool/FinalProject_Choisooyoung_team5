@@ -2,6 +2,7 @@ package com.ll.exam.mutbooks.app.security.dto;
 
 import com.ll.exam.mutbooks.app.member.entity.Member;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -12,9 +13,11 @@ import java.util.List;
 public class MemberContext extends User {
     private final Long id;
     private final LocalDateTime createDate;
-    private final LocalDateTime modifyDate;
+    @Setter
+    private LocalDateTime modifyDate;
     private final String username;
     private final String email;
+    private final int authLevel;
 
     public MemberContext(Member member, List<GrantedAuthority> authorities) {
         super(member.getUsername(), member.getPassword(), authorities);
@@ -23,6 +26,7 @@ public class MemberContext extends User {
         this.modifyDate = member.getModifyDate();
         this.username = member.getUsername();
         this.email = member.getEmail();
+        this.authLevel = 3;
     }
 
     public Member getMember() {
@@ -39,4 +43,5 @@ public class MemberContext extends User {
     public String getName() {
         return getUsername();
     }
+
 }
