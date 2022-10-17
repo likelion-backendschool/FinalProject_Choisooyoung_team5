@@ -27,6 +27,10 @@ public class Member extends BaseEntity {
         return username;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
     public Member(long id) {
         super(id);
     }

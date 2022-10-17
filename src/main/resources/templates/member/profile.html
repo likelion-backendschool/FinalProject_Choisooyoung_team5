@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}">
+
+<head>
+    <title>로그인</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <section class="section section-profile flex-grow flex flex-col items-center justify-center">
+        <div class="max-w-md w-full px-2 pt-4">
+            <h1 class="font-bold text-lg py-1">프로파일</h1>
+            <div class="text-base py-1">아이디 : <span th:text="${#authentication.principal.username}"></span></div>
+            <div class="text-base py-1">이메일 : <span th:text="${#authentication.principal.email}"></span></div>
+            <div class="text-base py-1">필명 : <span th:text="${#authentication.principal.nickname}"></span></div>
+            <div class="text-base py-1 text-blue-400"><a href="/member/modify">회원정보 수정</a></div>
+            <div class="text-base py-1 text-blue-400"><a href="/member/modifyPassword">비밀번호 변경</a></div>
+        </div>
+    </section>
+
+</main>
+</body>
+</html>

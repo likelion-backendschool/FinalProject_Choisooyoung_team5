@@ -65,6 +65,8 @@ public class MemberController {
 
         // 기존에 세션에 저장된 MemberContext 객체의 내용을 수정하는 코드 시작
         context.setModifyDate(member.getModifyDate());
+        context.setNickname(nickname);
+        context.setEmail(email);
         Authentication authentication = new UsernamePasswordAuthenticationToken(context, member.getPassword(), context.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // 기존에 세션에 저장된 MemberContext 객체의 내용을 수정하는 코드 끝

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}">
+
+<head>
+    <title>회원가입</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <section class="section section-modify flex-grow flex flex-col items-center justify-center">
+
+        <div class="max-w-md w-full px-2 pt-4">
+            <h1 class="font-bold text-lg">회원가입</h1>
+
+            <script>
+                let ModifyForm__submitDone = false;
+
+                function ModifyForm__submit(form) {
+                    if (ModifyForm__submitDone) {
+                        return;
+                    }
+
+                    form.email.value = form.email.value.trim();
+
+                    if (form.email.value.length == 0) {
+                        warningModal("이메일을 입력해주세요.");
+                        form.email.focus();
+
+                        return;
+                    }
+
+                    form.submit();
+                    ModifyForm__submitDone = true;
+                }
+            </script>
+
+            <form th:action method="POST" class="flex flex-col gap-3" onsubmit="ModifyForm__submit(this); return false;">
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">이메일</span>
+                    </label>
+                    <input type="email" name="email" th:placeholder="${#authentication.principal.email}" class="input input-bordered" maxlength="50">
+                </div>
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">필명</span>
+                    </label>
+                    <th:block th:if="${not #strings.isEmpty(#authentication.principal.nickname)}">
+                        <input autofocus type="text" name="nickname" th:placeholder="${#authentication.principal.nickname}" class="input input-bordered"
+                               maxlength="50">
+                    </th:block>
+                    <th:block th:unless="${not #strings.isEmpty(#authentication.principal.nickname)}">
+                        <input autofocus type="text" name="nickname" placeholder="필명 ( 필수 입력 사항이 아닙니다. )" class="input input-bordered"
+                               maxlength="50">
+                    </th:block>
+                </div>
+
+                <div class="grid grid-cols-2 mt-2 gap-2">
+                    <input class="btn btn-primary" type="submit" value="수정">
+                </div>
+
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>
