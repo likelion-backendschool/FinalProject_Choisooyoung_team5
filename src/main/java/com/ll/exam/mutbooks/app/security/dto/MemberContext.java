@@ -16,7 +16,10 @@ public class MemberContext extends User {
     @Setter
     private LocalDateTime modifyDate;
     private final String username;
-    private final String email;
+    @Setter
+    private String email;
+    @Setter
+    private String nickname;
     private final int authLevel;
 
     public MemberContext(Member member, List<GrantedAuthority> authorities) {
@@ -27,6 +30,7 @@ public class MemberContext extends User {
         this.username = member.getUsername();
         this.email = member.getEmail();
         this.authLevel = 3;
+        this.nickname = member.getNickname();
     }
 
     public Member getMember() {
@@ -37,11 +41,11 @@ public class MemberContext extends User {
                 .modifyDate(modifyDate)
                 .username(username)
                 .email(email)
+                .nickname(nickname)
                 .build();
     }
 
     public String getName() {
         return getUsername();
     }
-
 }
