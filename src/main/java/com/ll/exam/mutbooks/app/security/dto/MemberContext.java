@@ -48,5 +48,4 @@ public class MemberContext extends User {
     public String getName() {
         return getUsername();
     }
-
 }
