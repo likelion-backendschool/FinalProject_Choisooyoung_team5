@@ -71,7 +71,7 @@ public class MemberController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // 기존에 세션에 저장된 MemberContext 객체의 내용을 수정하는 코드 끝
 
-        return "redirect:/member/profile";
+        return "redirect:/member/profile?msg=" + Ut.url.encode("회원정보가 수정되었습니다.");
     }
 
     @PreAuthorize("isAuthenticated()")

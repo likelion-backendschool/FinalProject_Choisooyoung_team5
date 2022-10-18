@@ -40,7 +40,7 @@
                     <label class="label">
                         <span class="label-text">이메일</span>
                     </label>
-                    <input type="email" name="email" th:placeholder="${#authentication.principal.email}" class="input input-bordered" maxlength="50">
+                    <input type="email" name="email" th:value="${#authentication.principal.email}" class="input input-bordered" maxlength="50">
                 </div>
 
                 <div class="form-control">
@@ -48,7 +48,7 @@
                         <span class="label-text">필명</span>
                     </label>
                     <th:block th:if="${not #strings.isEmpty(#authentication.principal.nickname)}">
-                        <input autofocus type="text" name="nickname" th:placeholder="${#authentication.principal.nickname}" class="input input-bordered"
+                        <input autofocus type="text" name="nickname" th:value="${#authentication.principal.nickname}" class="input input-bordered"
                                maxlength="50">
                     </th:block>
                     <th:block th:unless="${not #strings.isEmpty(#authentication.principal.nickname)}">
