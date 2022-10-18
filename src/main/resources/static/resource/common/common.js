@@ -27,7 +27,3 @@ function errorModal(msg) {
 function warningModal(msg) {
     toastr["warning"](msg);
 }
-
-$(document).ready(function () {
-    $('.select-2').select2();
-});

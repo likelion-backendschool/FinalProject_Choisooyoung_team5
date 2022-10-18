@@ -14,12 +14,14 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -101,5 +103,39 @@ public class MemberController {
         }
         else return "redirect:/member/modifyPassword?msg=" + Ut.url.encode("비밀번호가 올바르지 않습니다.");
 
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @GetMapping("/findUsername")
+    public String showFindUsername() {
+        return "member/findUsername";
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @PostMapping("/findUsername")
+    public String findUsername(String email) {
+        Member member = memberService.findByEmail(email);
+        if (member != null) {
+            return "redirect:/member/findUsername?msg=" + Ut.url.encode("아이디는 " + member.getUsername() + " 입니다.");
+        }
+        else return "redirect:/member/findUsername?msg=" + Ut.url.encode("이메일 정보가 올바르지 않습니다.");
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @GetMapping("/findPassword")
+    public String showFindPassword() {
+        return "member/findPassword";
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @PostMapping("/findPassword")
+    public String findPassword(String username, String email) {
+        Member member = memberService.findByUsernameAndEmail(username, email);
+
+        if (member != null) {
+            memberService.sendEmailAndChangePassword(username ,email);
+            return "redirect:/member/findPassword?msg=" + Ut.url.encode("해당 이메일로 임시번호를 발송하였습니다.");
+        }
+        else return "redirect:/member/findPassword?msg=" + Ut.url.encode("입력하신 정보가 올바르지 않습니다.");
     }
 }
