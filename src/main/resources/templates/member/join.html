@@ -38,6 +38,13 @@
                         return;
                     }
 
+                    if (form.password.value != form.passwordConfirm.value) {
+                        warningModal("비밀번호가 일치하지 않습니다.");
+                        form.password.focus();
+
+                        return;;
+                    }
+
                     form.email.value = form.email.value.trim();
 
                     if (form.email.value.length == 0) {
@@ -50,6 +57,7 @@
                     form.submit();
                     MemberJoin__submitDone = true;
                 }
+
             </script>
 
 
@@ -99,6 +107,7 @@
                     <input class="btn btn-primary" type="submit" value="회원가입">
                     <a href="/member/login" class="btn btn-secondary btn-outline">로그인</a>
                 </div>
+
                 <script>
                     var passwordValidate = false;
                     $('#password, #passwordConfirm').on('keyup', function () {
@@ -106,7 +115,7 @@
                             $('#message').html('비밀번호가 일치합니다.').css('color', 'green');
                             passwordValidate = true;
                         } else
-                            $('#message').html('비밀번호가 일지하지 않습니다.').css('color', 'red');
+                            $('#message').html('비밀번호가 일치하지 않습니다.').css('color', 'red');
                     });
                 </script>
 

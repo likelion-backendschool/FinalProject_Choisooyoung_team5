@@ -58,4 +58,9 @@ public class MemberService {
         member.setEmail(email);
         member.setNickname(nickname);
     }
+
+    public void modifyPassword(Member member, String password) {
+        member.setPassword(passwordEncoder.encode(password));
+        memberRepository.save(member);
+    }
 }

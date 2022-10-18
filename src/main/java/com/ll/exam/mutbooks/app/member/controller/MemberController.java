@@ -2,6 +2,7 @@ package com.ll.exam.mutbooks.app.member.controller;
 
 import com.ll.exam.mutbooks.app.member.entity.Member;
 import com.ll.exam.mutbooks.app.member.form.JoinForm;
+import com.ll.exam.mutbooks.app.member.form.PswForm;
 import com.ll.exam.mutbooks.app.member.service.MemberService;
 import com.ll.exam.mutbooks.app.security.dto.MemberContext;
 import com.ll.exam.mutbooks.util.Ut;
@@ -11,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,7 @@ import javax.validation.Valid;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
@@ -80,4 +83,23 @@ public class MemberController {
         return "member/profile";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modifyPassword")
+    public String showModifyPassword() {
+        return "member/modifyPassword";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modifyPassword")
+    public String modifyPassword(@AuthenticationPrincipal MemberContext context, @Valid PswForm pswForm) {
+        Member member = memberService.findByUsername(context.getUsername()).get();
+
+        if (passwordEncoder.matches(pswForm.getOldPassword(),member.getPassword())) {
+            memberService.modifyPassword(member, pswForm.getPassword());
+
+            return "redirect:/member/profile?msg=" + Ut.url.encode("비밀번호가 변경되었습니다.");
+        }
+        else return "redirect:/member/modifyPassword?msg=" + Ut.url.encode("비밀번호가 올바르지 않습니다.");
+
+    }
 }
