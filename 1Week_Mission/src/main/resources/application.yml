@@ -1,0 +1,33 @@
+spring:
+  profiles:
+    active: dev
+    include:
+      - base-addi
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ekfms15815@gmail.com
+    password: krvrlfzfqtktjdau
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+logging:
+  level:
+    root: info
+    com.ll.exam.com.ll.exam.mutbooks: debug
+    org.hibernate.type.descriptor.sql: trace
+custom:
+  site:
+    name: mutbooks
+    baseUrl: "http://localhost:8010"
