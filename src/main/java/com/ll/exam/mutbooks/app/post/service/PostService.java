@@ -39,4 +39,8 @@ public class PostService {
     private Optional<Post> findById(Long id) {
         return postRepository.findById(id);
     }
+
+    public List<Post> findAll() {
+        return postRepository.findAll();
+    }
 }

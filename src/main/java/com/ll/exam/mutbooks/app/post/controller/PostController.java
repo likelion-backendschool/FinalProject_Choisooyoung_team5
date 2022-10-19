@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -45,6 +46,13 @@ public class PostController {
         model.addAttribute("post", post);
 
         return "post/detail";
+    }
+
+    @GetMapping("list")
+    public String list(Model model) {
+        List<Post> posts = postService.findAll();
+        model.addAttribute("posts", posts);
+        return "post/list";
     }
 
 }

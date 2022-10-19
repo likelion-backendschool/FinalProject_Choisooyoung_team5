@@ -50,6 +50,9 @@
                     <div th:text="${post.content}"></div>
                 </div>
 
+                <a class="badge badge-primary" sec:authorize="isAuthenticated()" href="/post/${post.id}/modify"
+                   th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}">글 수정하기</a>
+
             </div>
 
         </div>
