@@ -16,20 +16,28 @@
             <form th:action method="POST" class="flex flex-col gap-3"
                   onsubmit="PostWrite__submit(this); return false;">
                 <input type="hidden" name="content" />
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">제목</span>
-                        </label>
-                        <input autofocus type="text" name="subject" placeholder="제목" class="input input-bordered"
-                               maxlength="50">
-                    </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">제목</span>
+                    </label>
+                    <input autofocus type="text" name="subject" placeholder="제목" class="input input-bordered"
+                           maxlength="50">
+                </div>
 
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">내용</span>
-                        </label>
-                        <div class="toast-ui-editor"></div>
-                    </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">내용</span>
+                    </label>
+                    <div class="toast-ui-editor"></div>
+                </div>
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">해시태그</span>
+                    </label>
+                    <input type="text" name="hashTagContents" placeholder="#태그1 #태그2" class="input input-bordered"
+                           maxlength="50">
+                </div>
 
                 <div class="grid grid-cols-2 mt-2 gap-2">
                     <input class="btn btn-primary" type="submit" value="글 등록">

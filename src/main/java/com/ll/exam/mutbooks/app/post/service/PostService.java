@@ -1,5 +1,6 @@
 package com.ll.exam.mutbooks.app.post.service;
 
+import com.ll.exam.mutbooks.app.hasTag.service.HashTagService;
 import com.ll.exam.mutbooks.app.member.entity.Member;
 import com.ll.exam.mutbooks.app.post.entity.Post;
 import com.ll.exam.mutbooks.app.post.repository.PostRepository;
@@ -15,15 +16,17 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class PostService {
     private final PostRepository postRepository;
+    private final HashTagService hashTagService;
 
-    @Transactional
-    public Post write(Member author, String subject, String content) {
+    public Post write(Member author, String subject, String content, String hashTagContents) {
         Post post = Post.builder()
                 .subject(subject)
                 .content(content)
                 .author(author)
                 .build();
         postRepository.save(post);
+
+        hashTagService.applyHashTags(post, hashTagContents);
 
         return post;
     }
