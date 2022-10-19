@@ -51,7 +51,10 @@
                 </div>
 
                 <a class="badge badge-primary" sec:authorize="isAuthenticated()" href="/post/${post.id}/modify"
-                   th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}">글 수정하기</a>
+                   th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}">글 수정</a>
+
+                <a class="badge badge-primary" sec:authorize="isAuthenticated()" href="/post/${post.id}/delete"
+                   th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}">글 삭제</a>
 
             </div>
 
