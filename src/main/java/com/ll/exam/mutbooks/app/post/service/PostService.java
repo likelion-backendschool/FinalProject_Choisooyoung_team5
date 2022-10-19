@@ -36,11 +36,21 @@ public class PostService {
         return opPost;
     }
 
-    private Optional<Post> findById(Long id) {
+    public Optional<Post> findById(Long id) {
         return postRepository.findById(id);
     }
 
     public List<Post> findAll() {
         return postRepository.findAll();
+    }
+
+    public boolean actorCanModify(Member author, Post post) {
+        return author.getId().equals(post.getAuthor().getId());
+    }
+
+    @Transactional
+    public void modify(Post post, String subject, String content) {
+        post.setSubject(subject);
+        post.setContent(content);
     }
 }

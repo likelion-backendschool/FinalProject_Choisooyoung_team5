@@ -2,6 +2,7 @@ package com.ll.exam.mutbooks.app.post.controller;
 
 import com.ll.exam.mutbooks.app.member.entity.Member;
 import com.ll.exam.mutbooks.app.post.entity.Post;
+import com.ll.exam.mutbooks.app.post.exception.ActorCanNotModifyException;
 import com.ll.exam.mutbooks.app.post.form.PostForm;
 import com.ll.exam.mutbooks.app.post.service.PostService;
 import com.ll.exam.mutbooks.app.security.dto.MemberContext;
@@ -53,6 +54,38 @@ public class PostController {
         List<Post> posts = postService.findAll();
         model.addAttribute("posts", posts);
         return "post/list";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{id}/modify")
+    public String showModify(@AuthenticationPrincipal MemberContext memberContext, @PathVariable long id, Model model) {
+        Post post = postService.findForPrintById(id).get();
+
+        Member actor = memberContext.getMember();
+
+        if (postService.actorCanModify(actor, post) == false) {
+            throw new ActorCanNotModifyException();
+        }
+
+        model.addAttribute("post", post);
+
+        return "post/modify";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/{id}/modify")
+    public String modify(@AuthenticationPrincipal MemberContext memberContext, @PathVariable long id, @Valid PostForm postForm) {
+        Post post = postService.findById(id).get();
+
+        Member actor = memberContext.getMember();
+
+        if (postService.actorCanModify(actor, post) == false) {
+            throw new ActorCanNotModifyException();
+        }
+
+        postService.modify(post, postForm.getSubject(), postForm.getContent());
+
+        return "redirect:/post/" + post.getId() + "?msg=" + Ut.url.encode("%d번 글이 수정되었습니다.".formatted(post.getId()));
     }
 
 }
