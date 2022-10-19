@@ -35,13 +35,13 @@
                 <div>
                     <div class="badge badge-primary">작성날짜</div>
 
-                    <div th:text="${post.createDate}"></div>
+                    <div th:text="${#temporals.format(post.createDate, 'yy-MM-dd HH:mm')}"></div>
                 </div>
 
                 <div th:if="${post.modifyDate != null}">
                     <div class="badge badge-primary">수정날짜</div>
 
-                    <div th:text="${post.modifyDate}"></div>
+                    <div th:text="${#temporals.format(post.modifyDate, 'yy-MM-dd HH:mm')}"></div>
                 </div>
 
                 <div>
@@ -50,11 +50,13 @@
                     <div th:text="${post.content}"></div>
                 </div>
 
-                <a class="badge badge-primary" sec:authorize="isAuthenticated()" href="/post/${post.id}/modify"
-                   th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}">글 수정</a>
+                <a class="badge badge-primary" sec:authorize="isAuthenticated()"
+                   th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}"
+                   th:href="@{|/post/${post.id}/modify|}">글 수정</a>
 
-                <a class="badge badge-primary" sec:authorize="isAuthenticated()" href="/post/${post.id}/delete"
-                   th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}">글 삭제</a>
+                <a class="badge badge-primary" sec:authorize="isAuthenticated()"
+                   th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}"
+                   th:href="@{|/post/${post.id}/delete|}">글 삭제</a>
 
             </div>
 
