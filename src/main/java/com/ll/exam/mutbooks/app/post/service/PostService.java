@@ -53,4 +53,9 @@ public class PostService {
         post.setSubject(subject);
         post.setContent(content);
     }
+
+    @Transactional
+    public void delete(Post post) {
+        postRepository.delete(post);
+    }
 }

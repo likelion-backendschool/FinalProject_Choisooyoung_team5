@@ -2,6 +2,7 @@ package com.ll.exam.mutbooks.app.post.controller;
 
 import com.ll.exam.mutbooks.app.member.entity.Member;
 import com.ll.exam.mutbooks.app.post.entity.Post;
+import com.ll.exam.mutbooks.app.post.exception.ActorCanNotDeleteException;
 import com.ll.exam.mutbooks.app.post.exception.ActorCanNotModifyException;
 import com.ll.exam.mutbooks.app.post.form.PostForm;
 import com.ll.exam.mutbooks.app.post.service.PostService;
@@ -86,6 +87,19 @@ public class PostController {
         postService.modify(post, postForm.getSubject(), postForm.getContent());
 
         return "redirect:/post/" + post.getId() + "?msg=" + Ut.url.encode("%d번 글이 수정되었습니다.".formatted(post.getId()));
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{id}/delete")
+    public String delete(@AuthenticationPrincipal MemberContext memberContext, @PathVariable long id) {
+        Post post = postService.findById(id).get();
+
+        if (!post.getAuthor().getUsername().equals(memberContext.getUsername())) {
+            throw new ActorCanNotDeleteException();
+        }
+        postService.delete(post);
+
+        return "redirect:/post/list?msg=" + Ut.url.encode("%d번 글이 삭제되었습니다.".formatted(post.getId()));
     }
 
 }
