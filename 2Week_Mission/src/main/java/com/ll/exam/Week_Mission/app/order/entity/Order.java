@@ -26,6 +26,10 @@ import static javax.persistence.FetchType.LAZY;
 public class Order extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     private Member buyer;
+    private String name;
+    private boolean isPaid; // 결제여부
+    private boolean isCanceled; // 취소여부
+    private boolean isRefunded; // 환불여부
 
     @Builder.Default
     @OneToMany(mappedBy = "order", cascade = ALL, orphanRemoval = true)
@@ -51,12 +55,14 @@ public class Order extends BaseEntity {
         for (OrderItem orderItem : orderItems) {
             orderItem.setPaymentDone();
         }
+        isPaid = true;
     }
 
     public void setRefundDone() {
         for (OrderItem orderItem : orderItems) {
             orderItem.setRefundDone();
         }
+        isRefunded = true;
     }
 
     public int getPayPrice() {
@@ -68,13 +74,13 @@ public class Order extends BaseEntity {
         return payPrice;
     }
 
-    public String getName() {
+    public void makeName() {
         String name = orderItems.get(0).getProduct().getSubject();
 
         if ( orderItems.size() > 1 ) {
             name += " 외 %d권".formatted(orderItems.size() - 1);
         }
 
-        return name;
+        this.name = name;
     }
 }

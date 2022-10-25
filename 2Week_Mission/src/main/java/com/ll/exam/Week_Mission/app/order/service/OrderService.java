@@ -60,6 +60,9 @@ public class OrderService {
             order.addOrderItem(orderItem);
         }
 
+        // 주문 품목 이름 생성
+        order.makeName();
+
         orderRepository.save(order);
 
         return order;
@@ -102,5 +105,18 @@ public class OrderService {
 
     public boolean actorCanSee(Member actor, Order order) {
         return actor.getId().equals(order.getBuyer().getId());
+    }
+
+    // 토스페이먼츠를 예치금 시스템에 편입
+    @Transactional
+    public void payByTossPayments(Order order) {
+        Member buyer = order.getBuyer();
+        int payPrice = order.calculatePayPrice();
+
+        memberService.addCash(buyer, payPrice, "주문결제충전__토스페이먼츠");
+        memberService.addCash(buyer, payPrice * -1, "주문결제__토스페이먼츠");
+
+        order.setPaymentDone();
+        orderRepository.save(order);
     }
 }
