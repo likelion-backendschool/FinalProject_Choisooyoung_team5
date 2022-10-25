@@ -2,6 +2,8 @@ package com.ll.exam.Week_Mission.app.member.service;
 
 import com.ll.exam.Week_Mission.app.AppConfig;
 import com.ll.exam.Week_Mission.app.base.dto.RsData;
+import com.ll.exam.Week_Mission.app.cash.entity.CashLog;
+import com.ll.exam.Week_Mission.app.cash.service.CashService;
 import com.ll.exam.Week_Mission.app.email.service.EmailService;
 import com.ll.exam.Week_Mission.app.emailVerification.service.EmailVerificationService;
 import com.ll.exam.Week_Mission.app.member.entity.Member;
@@ -28,6 +30,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final EmailVerificationService emailVerificationService;
     private final EmailService emailService;
+    private final CashService cashService;
 
     @Transactional
     public Member join(String username, String password, String email, String nickname) {
@@ -139,5 +142,20 @@ public class MemberService {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(authentication);
         SecurityContextHolder.setContext(context);
+    }
+
+    @Transactional
+    public long addCash(Member member, long price, String eventType) {
+        CashLog cashLog = cashService.addCash(member, price, eventType);
+
+        long newRestCash = member.getRestCash() + cashLog.getPrice();
+        member.setRestCash(newRestCash);
+        memberRepository.save(member);
+
+        return newRestCash;
+    }
+
+    public long getRestCash(Member member) {
+        return member.getRestCash();
     }
 }
