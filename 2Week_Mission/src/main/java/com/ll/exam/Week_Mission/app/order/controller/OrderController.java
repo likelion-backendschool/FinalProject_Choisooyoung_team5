@@ -3,6 +3,7 @@ package com.ll.exam.Week_Mission.app.order.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ll.exam.Week_Mission.app.member.entity.Member;
+import com.ll.exam.Week_Mission.app.member.service.MemberService;
 import com.ll.exam.Week_Mission.app.order.entity.Order;
 import com.ll.exam.Week_Mission.app.order.exception.ActorCanNotSeeOrderException;
 import com.ll.exam.Week_Mission.app.order.exception.OrderIdNotMatchedException;
@@ -35,6 +36,7 @@ public class OrderController {
     private final OrderService orderService;
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper;
+    private final MemberService memberService;
 
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
@@ -43,11 +45,14 @@ public class OrderController {
 
         Member actor = memberContext.getMember();
 
+        long restCash = memberService.getRestCash(actor);
+
         if (orderService.actorCanSee(actor, order) == false) {
             throw new ActorCanNotSeeOrderException();
         }
 
         model.addAttribute("order", order);
+        model.addAttribute("actorRestCash", restCash);
 
         return "order/detail";
     }
