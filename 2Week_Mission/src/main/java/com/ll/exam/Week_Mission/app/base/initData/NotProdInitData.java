@@ -4,6 +4,7 @@ import com.ll.exam.Week_Mission.app.cart.entity.CartItem;
 import com.ll.exam.Week_Mission.app.cart.service.CartService;
 import com.ll.exam.Week_Mission.app.member.entity.Member;
 import com.ll.exam.Week_Mission.app.member.service.MemberService;
+import com.ll.exam.Week_Mission.app.order.service.OrderService;
 import com.ll.exam.Week_Mission.app.post.service.PostService;
 import com.ll.exam.Week_Mission.app.product.entity.Product;
 import com.ll.exam.Week_Mission.app.product.service.ProductService;
@@ -22,7 +23,8 @@ public class NotProdInitData {
             MemberService memberService,
             PostService postService,
             ProductService productService,
-            CartService cartService
+            CartService cartService,
+            OrderService orderService
     ) {
         return args -> {
             if (initDataDone) {
