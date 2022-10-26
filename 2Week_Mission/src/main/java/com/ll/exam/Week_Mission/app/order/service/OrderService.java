@@ -134,4 +134,8 @@ public class OrderService {
         order.setCanceled(true);
         orderRepository.save(order);
     }
+
+    public List<Order> getOrderByBuyer(Member buyer) {
+        return orderRepository.findAllByBuyerId(buyer.getId());
+    }
 }

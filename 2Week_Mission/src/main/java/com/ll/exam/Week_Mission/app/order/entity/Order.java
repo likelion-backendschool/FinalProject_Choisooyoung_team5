@@ -87,6 +87,7 @@ public class Order extends BaseEntity {
     public boolean isPayable() {
         if ( isPaid ) return false;
         if ( isCanceled ) return false;
+        if ( isRefunded ) return false;
 
         return true;
     }

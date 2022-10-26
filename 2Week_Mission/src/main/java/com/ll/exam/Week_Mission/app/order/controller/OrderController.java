@@ -168,4 +168,17 @@ public class OrderController {
         orderService.cancelOrder(order);
         return "redirect:/order/%d?msg=%s".formatted(order.getId(), Ut.url.encode("주문이 취소되었습니다."));
     }
+
+    @GetMapping("/list")
+    @PreAuthorize("isAuthenticated()")
+    public String showItems(@AuthenticationPrincipal MemberContext memberContext, Model model) {
+        Member buyer = memberContext.getMember();
+
+        List<Order> orders = orderService.getOrderByBuyer(buyer);
+
+        model.addAttribute("orders", orders);
+
+        return "order/list";
+    }
+
 }
