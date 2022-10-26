@@ -6,6 +6,7 @@ import com.ll.exam.Week_Mission.app.cart.entity.CartItem;
 import com.ll.exam.Week_Mission.app.cart.service.CartService;
 import com.ll.exam.Week_Mission.app.member.entity.Member;
 import com.ll.exam.Week_Mission.app.member.service.MemberService;
+import com.ll.exam.Week_Mission.app.myBook.service.MyBookService;
 import com.ll.exam.Week_Mission.app.order.entity.Order;
 import com.ll.exam.Week_Mission.app.order.entity.OrderItem;
 import com.ll.exam.Week_Mission.app.order.exception.ActorCanNotPayOrderException;
@@ -38,6 +39,7 @@ public class OrderController {
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper;
     private final MemberService memberService;
+    private final MyBookService myBookService;
 
     @PostMapping("/create")
     @PreAuthorize("isAuthenticated()")
@@ -61,6 +63,7 @@ public class OrderController {
         }
 
         orderService.payByRestCashOnly(order);
+        myBookService.add(order);
 
         return "redirect:/order/%d?msg=%s".formatted(order.getId(), Ut.url.encode("예치금으로 결제했습니다."));
     }
@@ -144,6 +147,7 @@ public class OrderController {
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             orderService.payByTossPayments(order, payPriceRestCash);
 
+            myBookService.add(order);
             return "redirect:/order/%d?msg=%s".formatted(order.getId(), Ut.url.encode("결제가 완료되었습니다."));
         } else {
             JsonNode failNode = responseEntity.getBody();
