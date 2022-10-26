@@ -1,6 +1,7 @@
 package com.ll.exam.Week_Mission.app.product.service;
 
 import com.ll.exam.Week_Mission.app.member.entity.Member;
+import com.ll.exam.Week_Mission.app.myBook.service.MyBookService;
 import com.ll.exam.Week_Mission.app.post.entity.Post;
 import com.ll.exam.Week_Mission.app.postTag.entity.PostTag;
 import com.ll.exam.Week_Mission.app.postTag.service.PostTagService;
@@ -30,6 +31,7 @@ public class ProductService {
     private final PostKeywordService postKeywordService;
     private final ProductTagService productTagService;
     private final PostTagService postTagService;
+    private final MyBookService myBookService;
 
     @Transactional
     public Product create(Member author, String subject, int price, long postKeywordId, String productTagContents) {
@@ -56,6 +58,7 @@ public class ProductService {
                 .build();
 
         productRepository.save(product);
+        myBookService.create(product);
 
         applyProductTags(product, productTagContents);
 

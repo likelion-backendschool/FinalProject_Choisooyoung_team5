@@ -5,6 +5,7 @@ import com.ll.exam.Week_Mission.app.myBook.entity.MyBook;
 import com.ll.exam.Week_Mission.app.myBook.repository.MyBookRepository;
 import com.ll.exam.Week_Mission.app.order.entity.Order;
 import com.ll.exam.Week_Mission.app.order.entity.OrderItem;
+import com.ll.exam.Week_Mission.app.product.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,5 +33,14 @@ public class MyBookService {
                     .build();
             myBookRepository.save(myBook);
         }
+    }
+
+    public void create(Product product) {
+        Member member = product.getAuthor();
+        MyBook myBook = MyBook.builder()
+                .member(member)
+                .product(product)
+                .build();
+        myBookRepository.save(myBook);
     }
 }
