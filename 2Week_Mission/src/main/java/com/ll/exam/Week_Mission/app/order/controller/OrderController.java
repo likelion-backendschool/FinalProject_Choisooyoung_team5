@@ -2,14 +2,18 @@ package com.ll.exam.Week_Mission.app.order.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ll.exam.Week_Mission.app.cart.entity.CartItem;
+import com.ll.exam.Week_Mission.app.cart.service.CartService;
 import com.ll.exam.Week_Mission.app.member.entity.Member;
 import com.ll.exam.Week_Mission.app.member.service.MemberService;
 import com.ll.exam.Week_Mission.app.order.entity.Order;
+import com.ll.exam.Week_Mission.app.order.entity.OrderItem;
 import com.ll.exam.Week_Mission.app.order.exception.ActorCanNotPayOrderException;
 import com.ll.exam.Week_Mission.app.order.exception.ActorCanNotSeeOrderException;
 import com.ll.exam.Week_Mission.app.order.exception.OrderIdNotMatchedException;
 import com.ll.exam.Week_Mission.app.order.exception.OrderNotEnoughRestCashException;
 import com.ll.exam.Week_Mission.app.order.service.OrderService;
+import com.ll.exam.Week_Mission.app.product.service.ProductService;
 import com.ll.exam.Week_Mission.app.security.dto.MemberContext;
 import com.ll.exam.Week_Mission.util.Ut;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +28,7 @@ import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -42,9 +44,7 @@ public class OrderController {
     public String createOrder(@AuthenticationPrincipal MemberContext memberContext) {
         Member member = memberContext.getMember();
         Order order = orderService.createFromCart(member);
-        String redirect = "redirect:/order/%d".formatted(order.getId()) + "?msg=" + Ut.url.encode("%d번 주문이 생성되었습니다.".formatted(order.getId()));
-
-        return redirect;
+        return "redirect:/order/%d".formatted(order.getId()) + "?msg=" + Ut.url.encode("%d번 주문이 생성되었습니다.".formatted(order.getId()));
     }
 
     @PostMapping("/{id}/payByRestCashOnly")
