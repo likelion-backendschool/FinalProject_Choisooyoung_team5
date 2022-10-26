@@ -128,4 +128,10 @@ public class OrderService {
     public boolean actorCanPayment(Member actor, Order order) {
         return actorCanSee(actor, order);
     }
+
+    @Transactional
+    public void cancelOrder(Order order) {
+        order.setCanceled(true);
+        orderRepository.save(order);
+    }
 }

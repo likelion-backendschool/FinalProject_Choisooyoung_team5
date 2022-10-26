@@ -19,6 +19,12 @@
             <h1 class="font-bold text-lg">주문 상세내용</h1>
             <div class="flex flex-col gap-3 mt-3">
                 <div>
+                    주문상태 : <span th:if="${order.isCanceled()}" th:text="주문취소"></span>
+                    <span th:if="${order.payable}" th:text="주문진행"></span>
+                    <span th:if="${order.isRefunded()}" th:text="환불"></span>
+                    <span th:if="${order.isPaid()}" th:text="결제완료"></span>
+                </div>
+                <div>
                     주문번호 : [[${order.id}]]
                 </div>
                 <div>
@@ -58,13 +64,14 @@
                                    type="checkbox" class="ml-2 checkbox">
                         </label>
                     </div>
-                    <button th:if="${order.payable}" onclick="payment();" class="btn btn-sm btn-primary">카드결제</button>
+                    <button th:if="${order.payable}" onclick="payment();" class="btn btn-sm btn-primary">카드결제</button><a th:href="@{|/order/${order.id}/cancel|}" class="btn btn-sm btn-primary ml-3">주문취소</a>
                     <span th:if="${order.isPaid}">결제완료</span>
                     <div>
                         <span>PG결제가격 : </span>
                         <span id="PaymentForm__pgPayPriceDisplay">
                         </span>
                     </div>
+
                 </div>
             </div>
         </div>

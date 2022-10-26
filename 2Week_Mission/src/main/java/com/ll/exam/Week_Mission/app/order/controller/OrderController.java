@@ -159,4 +159,13 @@ public class OrderController {
         model.addAttribute("code", code);
         return "order/fail";
     }
+
+    @GetMapping("/{id}/cancel")
+    @PreAuthorize("isAuthenticated()")
+    public String cancelOrder(@AuthenticationPrincipal MemberContext memberContext, @PathVariable long id) {
+        Member member = memberContext.getMember();
+        Order order = orderService.findForPrintById(id).get();
+        orderService.cancelOrder(order);
+        return "redirect:/order/%d?msg=%s".formatted(order.getId(), Ut.url.encode("주문이 취소되었습니다."));
+    }
 }
