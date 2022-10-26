@@ -37,6 +37,16 @@ public class OrderController {
     private final ObjectMapper objectMapper;
     private final MemberService memberService;
 
+    @PostMapping("/create")
+    @PreAuthorize("isAuthenticated()")
+    public String createOrder(@AuthenticationPrincipal MemberContext memberContext) {
+        Member member = memberContext.getMember();
+        Order order = orderService.createFromCart(member);
+        String redirect = "redirect:/order/%d".formatted(order.getId()) + "?msg=" + Ut.url.encode("%d번 주문이 생성되었습니다.".formatted(order.getId()));
+
+        return redirect;
+    }
+
     @PostMapping("/{id}/payByRestCashOnly")
     @PreAuthorize("isAuthenticated()")
     public String payByRestCashOnly(@AuthenticationPrincipal MemberContext memberContext, @PathVariable long id) {
