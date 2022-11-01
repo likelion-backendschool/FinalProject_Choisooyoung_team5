@@ -52,6 +52,27 @@ public class MemberService {
         return member;
     }
 
+    @Transactional
+    public Member join(String username, String password, String email, String nickname, int authLevel) {
+        if (memberRepository.findByUsername(username).isPresent()) {
+            throw new AlreadyJoinException();
+        }
+
+        Member member = Member.builder()
+                .username(username)
+                .password(passwordEncoder.encode(password))
+                .email(email)
+                .nickname(nickname)
+                .authLevel(authLevel)
+                .build();
+
+        memberRepository.save(member);
+
+        emailVerificationService.send(member);
+
+        return member;
+    }
+
     public Optional<Member> findByUsername(String username) {
         return memberRepository.findByUsername(username);
     }
