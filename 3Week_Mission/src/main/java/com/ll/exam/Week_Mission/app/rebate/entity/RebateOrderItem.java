@@ -94,7 +94,7 @@ public class RebateOrderItem extends BaseEntity {
     }
 
     public int calculateRebatePrice() {
-        if ( isRebateAvailable() == false ) {
+        if (refundPrice > 0) {
             return 0;
         }
 
@@ -102,10 +102,15 @@ public class RebateOrderItem extends BaseEntity {
     }
 
     public boolean isRebateAvailable() {
-        if ( refundPrice > 0 ) {
+        if (refundPrice > 0 || rebateDate != null) {
             return false;
         }
 
         return true;
+    }
+
+    public void setRebateDone(long cashLogId) {
+        rebateDate = LocalDateTime.now();
+        this.rebateCashLog = new CashLog(cashLogId);
     }
 }
