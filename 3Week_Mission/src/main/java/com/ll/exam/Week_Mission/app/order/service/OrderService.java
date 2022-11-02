@@ -1,6 +1,5 @@
 package com.ll.exam.Week_Mission.app.order.service;
 
-import com.ll.exam.Week_Mission.app.attr.service.AttrService;
 import com.ll.exam.Week_Mission.app.cart.entity.CartItem;
 import com.ll.exam.Week_Mission.app.cart.service.CartService;
 import com.ll.exam.Week_Mission.app.member.entity.Member;
@@ -142,7 +141,7 @@ public class OrderService {
         return orderRepository.findAllByBuyerId(buyer.getId());
     }
 
-    public List<OrderItem> findAllByPayDateBetween(LocalDateTime fromDate, LocalDateTime toDate) {
+    public List<OrderItem> findAllByPayDateBetweenOrderByIdAsc(LocalDateTime fromDate, LocalDateTime toDate) {
         return orderItemRepository.findAllByPayDateBetween(fromDate, toDate);
     }
 }
