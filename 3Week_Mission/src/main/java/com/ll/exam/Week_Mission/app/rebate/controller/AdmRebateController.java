@@ -25,10 +25,19 @@ public class AdmRebateController {
 
     @PostMapping("/makeData")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @ResponseBody
     public String makeData(String yearMonth){
         rebateService.makeDate(yearMonth);
 
-        return "성공";
+        return "redirect:/adm/rebate/rebateOrderItemList?yearMonth=" + yearMonth + "&msg=" + Ut.url.encode("정산데이터가 성공적으로 생성되었습니다.");
+    }
+
+    @GetMapping("/rebateOrderItemList")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String showRebateOrderItemList(String yearMonth) {
+        if (yearMonth == null) {
+            yearMonth = "2022-10";
+        }
+
+        return "adm/rebate/rebateOrderItemList";
     }
 }
