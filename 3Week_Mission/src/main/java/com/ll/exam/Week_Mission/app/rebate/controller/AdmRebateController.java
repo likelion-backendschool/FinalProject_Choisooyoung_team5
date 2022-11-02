@@ -1,6 +1,8 @@
 package com.ll.exam.Week_Mission.app.rebate.controller;
 
+import com.ll.exam.Week_Mission.app.rebate.service.RebateService;
 import com.ll.exam.Week_Mission.util.Ut;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +14,9 @@ import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/adm/rebate")
+@RequiredArgsConstructor
 public class AdmRebateController {
+    private final RebateService rebateService;
     @GetMapping("/makeData")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String showMakeData() {
@@ -23,13 +27,8 @@ public class AdmRebateController {
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @ResponseBody
     public String makeData(String yearMonth){
-        int monthEndDay = Ut.date.getEndDayOf(yearMonth);
+        rebateService.makeDate(yearMonth);
 
-        String fromDateStr = yearMonth + "-01 00:00:00.000000";
-        String toDateStr = yearMonth + "-%02d 23:59:59.999999".formatted(monthEndDay);
-        LocalDateTime fromDate = Ut.date.parse(fromDateStr);
-        LocalDateTime toDate = Ut.date.parse(toDateStr);
-
-        return "fromDateStr : %s<br>toDateStr : %s".formatted(fromDateStr, toDateStr);
+        return "성공";
     }
 }
