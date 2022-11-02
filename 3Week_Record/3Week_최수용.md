@@ -23,13 +23,16 @@
 ### 주요엔드포인트
 홈
 - [x] 관리자 페이지 GET /adm/home/main
+
 주문
 - [x] 정산데이터생성 폼 GET /adm/rebate/makeData
 - [x] 정산데이터생성 POST /adm/rebate/makeData
+
 정산
 - [x] 정산데이터리스트 GET /adm/rebate/rebateOrderItemList
 - [x] 정산(전체, 건별) POST /adm/rebate/rebate
 - [x] 정산(전체, 건별) POST /adm/rebate/rebateOne/{rebateOrderItemId}
+
 출금
 - [ ] 출금신청 GET /withdraw/apply
 - [ ] 출금신청 POST /withdraw/apply
