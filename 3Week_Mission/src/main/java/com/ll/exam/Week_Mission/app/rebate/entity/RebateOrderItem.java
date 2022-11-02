@@ -98,7 +98,7 @@ public class RebateOrderItem extends BaseEntity {
             return 0;
         }
 
-        return payPrice - pgFee - wholesalePrice;
+        return wholesalePrice - pgFee;
     }
 
     public boolean isRebateAvailable() {
