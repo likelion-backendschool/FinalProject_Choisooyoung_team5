@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}">
+
+<head>
+    <title>나의 도서 목록</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <section class="section section-post-list container mx-auto">
+
+        <div class="px-2 pt-4">
+            <h1 class="font-bold text-lg">
+                <i class="fa-solid fa-book"></i>
+                나의 도서 목록
+            </h1>
+
+            <div class="mt-2">
+                <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+                    <li th:each="mybook : ${myBooks}">
+
+                        <div class="card bg-base-100 shadow-xl">
+                            <a th:href="@{|/myBook/${mybook.product.id}|}" class="block">
+                                <figure>
+                                    <svg width="200" height="200" th:data-jdenticon-value="${mybook.product.jdenticon}"></svg>
+                                </figure>
+                            </a>
+                            <div class="card-body">
+                                <h2 class="card-title flex flex-wrap">
+                                    <a th:href="@{|/myBook/${mybook.product.id}|}" class="mr-auto">
+                                        <i class="fa-solid fa-book-open"></i>
+                                        <span th:text="${mybook.product.subject}"></span>
+                                    </a>
+                                    <div class="flex">
+                                        <svg width="20" height="20" th:data-jdenticon-value="${mybook.product.author.jdenticon}"></svg>
+                                        <div th:text="${mybook.product.author.name}"></div>
+                                    </div>
+                                </h2>
+                                <div th:text="|￦ ${@ut.nf(mybook.product.salePrice)}|"></div>
+                                <div th:utext="${mybook.product.extra_productTagLinks}"></div>
+                                <div class="flex justify-end">
+                                    <div class="badge badge-outline">
+                                        <i class="fa-solid fa-pen"></i>
+                                        <span class="ml-2"
+                                              th:text="${#temporals.format(mybook.product.createDate, 'yy-MM-dd HH:mm')}"></span>
+                                    </div>
+                                </div>
+                                <div th:if="${mybook.product.createDate != mybook.product.modifyDate}" class="flex justify-end">
+                                    <div class="badge">
+                                        <i class="fa-solid fa-eraser"></i>
+                                        <span class="ml-2"
+                                              th:text="${#temporals.format(mybook.product.modifyDate, 'yy-MM-dd HH:mm')}"></span>lear
+                                    </div>
+                                </div>
+                                <div class="card-actions justify-end">
+                                    <a th:href="@{|/myBook/${mybook.product.id}|}" class="btn btn-sm">
+                                        <i class="fa-solid fa-eye"></i>
+                                        <span class="ml-2">보기</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+</main>
+</body>
+</html>
